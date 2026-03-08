@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // output: 'export',
-  // basePath: '/The_Vlog',
+  output: 'export',
+  basePath: '/The_Vlog',
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
