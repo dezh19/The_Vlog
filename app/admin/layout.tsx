@@ -221,7 +221,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-3 border-t border-white/[0.06] space-y-1">
           <Link
             href="/"
-            target="_blank"
             className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#52525B] hover:text-white hover:bg-white/[0.04] transition-all duration-200"
           >
             <Eye className="w-4 h-4 shrink-0" />
@@ -276,7 +275,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="ml-auto flex items-center gap-3">
             <Link
               href="/"
-              target="_blank"
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#52525B] border border-white/[0.06] rounded-lg hover:text-[#06B6D4] hover:border-[#06B6D4]/25 transition-all duration-200"
             >
               <Eye className="w-3.5 h-3.5" />
