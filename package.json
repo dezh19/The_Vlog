@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
+    "build:gh": "set DEPLOY_TARGET=github&& next build",
+    "build:netlify": "next build",
     "start": "next start",
     "lint": "next lint"
   },

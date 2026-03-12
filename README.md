@@ -43,9 +43,39 @@ To learn more about Next.js, take a look at the following resources:
 
 ## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+This project is configured for static export and supports both **GitHub Pages** and **Netlify**.
 
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Build targets
+
+- **GitHub Pages** (project path deployment)
+  ```bash
+  npm run build:gh
+  ```
+  This sets `DEPLOY_TARGET=github`, which enables:
+  - `basePath: /The_Vlog`
+  - `assetPrefix: /The_Vlog`
+
+- **Netlify** (root deployment)
+  ```bash
+  npm run build:netlify
+  ```
+  This builds with no base path prefix.
+
+### Local development
+
+Use:
+```bash
+npm run dev
+```
+
+Dev runs with Webpack to avoid a known Turbopack filesystem access panic on some Windows/OneDrive setups.
+
+### Output folder
+
+Static files are generated in:
+- `out/`
+
+Use `out/` as the publish directory in your static host configuration.
 
 ---
 

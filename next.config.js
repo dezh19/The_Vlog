@@ -1,12 +1,17 @@
 const path = require('path')
 
 const isProd = process.env.NODE_ENV === 'production'
+const isGitHubPages = process.env.DEPLOY_TARGET === 'github'
+const repoBasePath = '/The_Vlog'
+const basePath = isProd && isGitHubPages ? repoBasePath : ''
+const assetPrefix = basePath || undefined
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  basePath: isProd ? '/The_Vlog' : '',
+  basePath,
+  assetPrefix,
   turbopack: {
     root: path.resolve(__dirname),
   },

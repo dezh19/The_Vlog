@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build:netlify"
+  publish = "out"
+
+# For static-exported Next.js sites, direct visits to nested routes
+# can 404 unless rewritten to index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
