@@ -88,7 +88,7 @@ export default function Footer() {
                 <PlayCircle className="w-4 h-4 text-[#06B6D4]" strokeWidth={2} />
               </div>
               <span className="font-bold text-white tracking-[0.12em] uppercase text-sm">
-                THE <span className="text-[#06B6D4]">VLOG</span>
+                TAG <span className="text-[#06B6D4]">Christian Media</span>
               </span>
             </a>
 

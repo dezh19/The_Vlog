@@ -1,3 +1,6 @@
 - [x] Update `netlify.toml` to skip Netlify Next.js plugin for static export
 - [x] Verify config consistency (`publish = "out"` with `output: "export"`)
 - [ ] Summarize changes and redeploy instruction
+- [x] Update header branding in `components/navbar.tsx` from `THE VLOG` to `TAG Christian Media`
+- [x] Update footer branding in `components/footer.tsx` from `THE VLOG` to `TAG Christian Media`
+- [x] Verify no remaining `THE VLOG` branding in active source files
