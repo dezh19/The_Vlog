@@ -7,7 +7,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: 'The Vlog — Christian Media Platform',
+  title: 'TAG Christian Media — Christian Media Platform',
   description: 'A platform for Christian content including videos, blogs, scriptures, podcasts, and faith-based news — updated weekly.',
 }
 

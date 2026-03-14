@@ -86,7 +86,7 @@ export default function HeroAdminPage() {
               value={form.subheadline}
               onChange={(e) => set("subheadline", e.target.value)}
               rows={3}
-              placeholder="The Vlog is a platform for..."
+              placeholder="TAG Christian Media is a platform for..."
             />
           </div>
         </AdminCard>

@@ -36,7 +36,7 @@ export default function Events() {
             </span>
           </h2>
           <p className="text-lg text-[#52525B] max-w-xl mx-auto leading-relaxed">
-            Join The Vlog community in person. From conferences to youth nights — there is a seat
+            Join TAG Christian Media community in person. From conferences to youth nights — there is a seat
             for you at every table.
           </p>
         </div>

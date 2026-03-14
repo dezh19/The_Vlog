@@ -75,7 +75,7 @@ export default function About() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.07] bg-white/[0.03] mb-6">
               <span className="text-[10px] text-[#52525B] uppercase tracking-[0.14em] font-semibold">
-                About The Vlog
+                About TAG Christian Media
               </span>
             </div>
 

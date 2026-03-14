@@ -120,7 +120,7 @@ export const defaultSiteData: SiteData = {
     headlineAccent: "Truth.",
     headline2: "Community.",
     subheadline:
-      "The Vlog is a platform for Christian content including videos, blogs, scriptures, podcasts, and faith-based news — updated weekly.",
+      "TAG Christian Media is a platform for Christian content including videos, blogs, scriptures, podcasts, and faith-based news — updated weekly.",
     ctaPrimary: "Explore Content",
     ctaSecondary: "Watch Latest Episode",
     scripture: {
@@ -230,7 +230,7 @@ export const defaultSiteData: SiteData = {
       name: "Marcus Adeyemi",
       role: "Youth Pastor, Lagos",
       quote:
-        "The Vlog transformed how I prepare sermons. The scripture breakdowns gave me fresh perspective on passages I thought I knew inside out.",
+        "TAG Christian Media transformed how I prepare sermons. The scripture breakdowns gave me fresh perspective on passages I thought I knew inside out.",
       image:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop&facepad=3&faces=1",
       verse: "Proverbs 27:17",
@@ -240,7 +240,7 @@ export const defaultSiteData: SiteData = {
       name: "Amara Wilson",
       role: "College Student, Atlanta",
       quote:
-        "As a believer navigating university life, The Vlog became my anchor. The podcast episodes on faith and identity spoke directly to everything I was wrestling with.",
+        "As a believer navigating university life, TAG Christian Media became my anchor. The podcast episodes on faith and identity spoke directly to everything I was wrestling with.",
       image:
         "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&q=80&auto=format&fit=crop&facepad=3",
       verse: "Isaiah 41:10",
@@ -250,7 +250,7 @@ export const defaultSiteData: SiteData = {
       name: "Daniel Okonkwo",
       role: "Church Elder, Abuja",
       quote:
-        "We use The Vlog in our midweek Bible study. The depth of teaching combined with the modern format keeps our congregation engaged and hungry for more.",
+        "We use TAG Christian Media in our midweek Bible study. The depth of teaching combined with the modern format keeps our congregation engaged and hungry for more.",
       image:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80&auto=format&fit=crop&facepad=3",
       verse: "2 Timothy 3:16",
@@ -260,7 +260,7 @@ export const defaultSiteData: SiteData = {
       name: "Grace Mensah",
       role: "Worship Leader, London",
       quote:
-        "I found The Vlog during a difficult season. The consistent, authentic content kept my faith alive when I could barely get out of bed. Truly life-changing.",
+        "I found TAG Christian Media during a difficult season. The consistent, authentic content kept my faith alive when I could barely get out of bed. Truly life-changing.",
       image:
         "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=200&q=80&auto=format&fit=crop&facepad=3",
       verse: "Romans 8:28",
@@ -306,7 +306,7 @@ export const defaultSiteData: SiteData = {
     },
     {
       id: "e2",
-      title: "The Vlog Live — Youth Night",
+      title: "TAG Christian Media Live — Youth Night",
       date: "April 5, 2025",
       time: "6:00 PM – 10:00 PM",
       location: "Houston, Texas",
@@ -360,7 +360,7 @@ export const defaultSiteData: SiteData = {
         id: "b1",
         title: "Speaking Engagements",
         description:
-          "Invite The Vlog team to speak at your conference, seminar, or special service with a message tailored to your audience.",
+          "Invite TAG Christian Media team to speak at your conference, seminar, or special service with a message tailored to your audience.",
       },
       {
         id: "b2",
@@ -372,7 +372,7 @@ export const defaultSiteData: SiteData = {
         id: "b3",
         title: "Youth Gatherings",
         description:
-          "We specialize in reaching the next generation. Book The Vlog for youth camps, retreats, and school outreach programs.",
+          "We specialize in reaching the next generation. Book TAG Christian Media for youth camps, retreats, and school outreach programs.",
       },
       {
         id: "b4",
@@ -432,10 +432,10 @@ export const defaultSiteData: SiteData = {
       { value: "30+", label: "Nations Reached" },
     ],
     missionText:
-      "The Vlog exists to spread the Gospel through digital media, weekly teachings, and authentic Christian storytelling.",
+      "TAG Christian Media exists to spread the Gospel through digital media, weekly teachings, and authentic Christian storytelling.",
     missionScripture: { text: "Our Mission", reference: "Our Mission" },
     bodyText:
-      "Founded in 2017, The Vlog began as a simple camera and a conviction to share truth online. Today it is a full-scale Christian media platform trusted by believers across six continents, producing weekly content that teaches, encourages, and challenges the global church.",
+      "Founded in 2017, TAG Christian Media began as a simple camera and a conviction to share truth online. Today it is a full-scale Christian media platform trusted by believers across six continents, producing weekly content that teaches, encourages, and challenges the global church.",
     image:
       "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=85&auto=format&fit=crop",
     imageAlt:

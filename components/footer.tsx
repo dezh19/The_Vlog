@@ -82,7 +82,7 @@ export default function Footer() {
             <a
               href="#"
               className="flex items-center gap-2.5 mb-5 group w-fit"
-              aria-label="The Vlog Home"
+              aria-label="TAG Christian Media Home"
             >
               <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 border border-[#06B6D4]/25 flex items-center justify-center group-hover:bg-[#06B6D4]/20 transition-colors duration-200">
                 <PlayCircle className="w-4 h-4 text-[#06B6D4]" strokeWidth={2} />
@@ -139,7 +139,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/[0.05] py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#27272A]">
-            &copy; {new Date().getFullYear()} The Vlog. All rights reserved.
+            &copy; {new Date().getFullYear()} TAG Christian Media. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a

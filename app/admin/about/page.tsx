@@ -93,7 +93,7 @@ export default function AboutAdminPage() {
               value={form.missionText}
               onChange={(e) => setField("missionText", e.target.value)}
               rows={3}
-              placeholder="The Vlog exists to spread the Gospel through digital media..."
+              placeholder="TAG Christian Media exists to spread the Gospel through digital media..."
               hint="Displayed in the scripture-style pull quote block"
             />
             <Textarea
@@ -101,7 +101,7 @@ export default function AboutAdminPage() {
               value={form.bodyText}
               onChange={(e) => setField("bodyText", e.target.value)}
               rows={4}
-              placeholder="Founded in 2017, The Vlog began as a simple camera..."
+              placeholder="Founded in 2017, TAG Christian Media began as a simple camera..."
             />
           </div>
         </AdminCard>

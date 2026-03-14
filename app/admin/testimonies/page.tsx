@@ -136,7 +136,7 @@ export default function TestimoniesAdminPage() {
                     value={local.quote}
                     onChange={(e) => updateLocal(testimony.id, "quote", e.target.value)}
                     rows={3}
-                    placeholder="The Vlog transformed how I..."
+                    placeholder="TAG Christian Media transformed how I..."
                     required
                   />
 

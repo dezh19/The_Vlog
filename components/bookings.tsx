@@ -48,7 +48,7 @@ export default function Bookings() {
             </div>
 
             <h2 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-5 text-balance leading-tight">
-              Invite The Vlog to{" "}
+              Invite TAG Christian Media to{" "}
               <span
                 className="text-[#06B6D4]"
                 style={{ textShadow: "0 0 30px rgba(6,182,212,0.35)" }}
@@ -59,7 +59,7 @@ export default function Bookings() {
 
             <p className="text-[1.0625rem] text-[#52525B] leading-relaxed mb-8">
               Whether it is a Sunday morning service, a youth retreat, or a national conference —
-              The Vlog is available to bring the Word with power and authenticity.
+              TAG Christian Media is available to bring the Word with power and authenticity.
             </p>
 
             {/* Checklist */}

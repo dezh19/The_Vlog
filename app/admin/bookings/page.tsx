@@ -138,7 +138,7 @@ export default function BookingsAdminPage() {
                   value={type.description}
                   onChange={(e) => updateType(type.id, "description", e.target.value)}
                   rows={3}
-                  placeholder="Invite The Vlog team to speak..."
+                  placeholder="Invite TAG Christian Media team to speak..."
                 />
               </div>
             ))}

@@ -36,7 +36,7 @@ export default function Testimonies() {
             </span>
           </h2>
           <p className="text-lg text-[#52525B] max-w-lg mx-auto leading-relaxed">
-            Real people. Real encounters with God. Shared through The Vlog community.
+            Real people. Real encounters with God. Shared through TAG Christian Media community.
           </p>
         </div>
 

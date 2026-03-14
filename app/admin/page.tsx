@@ -109,7 +109,7 @@ export default function AdminDashboard() {
           <h1 className="text-xl font-bold text-white">Dashboard</h1>
         </div>
         <p className="text-sm text-[#52525B]">
-          Welcome to The Vlog admin panel. Manage all site content from here.
+          Welcome to TAG Christian Media admin panel. Manage all site content from here.
         </p>
         {lastSaved && (
           <div className="flex items-center gap-1.5 mt-3">

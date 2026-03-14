@@ -31,7 +31,7 @@ export default function Navbar() {
     >
       <nav className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2.5 group" aria-label="The Vlog Home">
+        <a href="#" className="flex items-center gap-2.5 group" aria-label="TAG Christian Media Home">
           <div className="w-8 h-8 rounded-lg bg-[#06B6D4]/10 border border-[#06B6D4]/25 flex items-center justify-center group-hover:bg-[#06B6D4]/20 transition-all duration-300">
             <PlayCircle className="w-4 h-4 text-[#06B6D4]" strokeWidth={2} />
           </div>
