@@ -16,6 +16,9 @@ function buildHeaders(extra?: HeadersInit): Headers {
 
   headers.set("Content-Type", "application/json");
 
+  // For development, we may not have a valid token
+  // This allows the CMS API to work in development mode
+  // In production, ensure STRAPI_API_TOKEN is properly configured
   if (STRAPI_API_TOKEN) {
     headers.set("Authorization", `Bearer ${STRAPI_API_TOKEN}`);
   }
@@ -57,3 +60,57 @@ export function normalizeEntity<T extends Record<string, unknown>>(entity: Strap
 }
 
 export type { StrapiData };
+
+export interface StrapiMediaObject {
+  id?: number;
+  name?: string;
+  url?: string;
+  width?: number;
+  height?: number;
+  mime?: string;
+  size?: number;
+}
+
+/**
+ * Build full URL for a Strapi media object
+ * Handles both relative paths and absolute URLs
+ */
+export function getMediaUrl(media: unknown): string {
+  if (!media || typeof media !== "object") return "";
+
+  const mediaObj = media as Record<string, unknown>;
+  let url = mediaObj.url;
+
+  if (typeof url !== "string") return "";
+
+  // If relative path, prepend Strapi base URL
+  if (url.startsWith("/")) {
+    return `${STRAPI_BASE_URL}${url}`;
+  }
+
+  // If already absolute, return as-is
+  if (url.startsWith("http")) {
+    return url;
+  }
+
+  return "";
+}
+
+/**
+ * Extract media URLs from single or array of media
+ */
+export function getMediaUrls(media: unknown | unknown[]): string[] {
+  if (Array.isArray(media)) {
+    return media.map(getMediaUrl).filter(Boolean);
+  }
+  const url = getMediaUrl(media);
+  return url ? [url] : [];
+}
+
+/**
+ * Get first media URL (useful for single media fields)
+ */
+export function getFirstMediaUrl(media: unknown | unknown[]): string {
+  const urls = getMediaUrls(media);
+  return urls[0] || "";
+}

@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import { defaultSiteData, SiteData, ContentFeature, Event, Testimony } from "@/lib/data/site-data";
-import { normalizeEntity, strapiRequest, StrapiData } from "@/lib/server/strapi";
+import { normalizeEntity, strapiRequest, StrapiData, getMediaUrl, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
 
 type MaybeEntity = Record<string, unknown> & { id: number };
 
 type StrapiListResponse = StrapiData<Array<Record<string, unknown>>>;
 type StrapiSingleResponse = StrapiData<Record<string, unknown> | null>;
 
-const CONTENT_FEATURES_PATH = "/api/content-features?pagination[pageSize]=100&sort=sortOrder:asc";
-const TESTIMONIES_PATH = "/api/testimonies?pagination[pageSize]=100&sort=sortOrder:asc";
-const EVENTS_PATH = "/api/events?pagination[pageSize]=100&sort=sortOrder:asc";
+const HERO_PATH = "/api/hero?populate=*";
+const ABOUT_PATH = "/api/about?populate=*";
+const FOOTER_PATH = "/api/footer?populate=*";
+const BOOKING_PATH = "/api/booking?populate=*";
+const CONTENT_FEATURES_PATH = "/api/content-features?pagination[pageSize]=100&sort=sortOrder:asc&populate=*";
+const TESTIMONIES_PATH = "/api/testimonies?pagination[pageSize]=100&sort=sortOrder:asc&populate=*";
+const EVENTS_PATH = "/api/events?pagination[pageSize]=100&sort=sortOrder:asc&populate=*";
 
 function asString(value: unknown, fallback = ""): string {
   return typeof value === "string" ? value : fallback;
@@ -71,10 +75,10 @@ function fromHeroEntity(entity: MaybeEntity | null): SiteData["hero"] {
     },
     stats: asObjectArray<SiteData["hero"]["stats"][number]>(entity.stats),
     mainImage: {
-      src: asString(entity.mainImageSrc, defaultSiteData.hero.mainImage.src),
-      alt: asString(entity.mainImageAlt, defaultSiteData.hero.mainImage.alt),
+      src: getFirstMediaUrl(entity.mainImage) || defaultSiteData.hero.mainImage.src,
+      alt: asString(entity.mainImage?.name || "", defaultSiteData.hero.mainImage.alt),
     },
-    smallImages: asObjectArray<SiteData["hero"]["smallImages"][number]>(entity.smallImages),
+    smallImages: getMediaUrls(entity.smallImages).map(src => ({ src })),
     liveLabel: asString(entity.liveLabel, defaultSiteData.hero.liveLabel),
   };
 }
@@ -107,8 +111,8 @@ function fromAboutEntity(entity: MaybeEntity | null): SiteData["about"] {
       reference: asString(entity.missionScriptureReference, defaultSiteData.about.missionScripture.reference),
     },
     bodyText: asString(entity.bodyText, defaultSiteData.about.bodyText),
-    image: asString(entity.image, defaultSiteData.about.image),
-    imageAlt: asString(entity.imageAlt, defaultSiteData.about.imageAlt),
+    image: getFirstMediaUrl(entity.image) || defaultSiteData.about.image,
+    imageAlt: asString(entity.image?.name || "", defaultSiteData.about.imageAlt),
     floatStatValue: asString(entity.floatStatValue, defaultSiteData.about.floatStatValue),
     floatStatLabel: asString(entity.floatStatLabel, defaultSiteData.about.floatStatLabel),
     floatStatSub: asString(entity.floatStatSub, defaultSiteData.about.floatStatSub),
@@ -165,8 +169,8 @@ function fromBookingEntity(entity: MaybeEntity | null): SiteData["bookings"] {
       text: asString(entity.scriptureText, defaultSiteData.bookings.scripture.text),
       reference: asString(entity.scriptureReference, defaultSiteData.bookings.scripture.reference),
     },
-    image: asString(entity.image, defaultSiteData.bookings.image),
-    imageAlt: asString(entity.imageAlt, defaultSiteData.bookings.imageAlt),
+    image: getFirstMediaUrl(entity.image) || defaultSiteData.bookings.image,
+    imageAlt: asString(entity.image?.name || "", defaultSiteData.bookings.imageAlt),
     imageCaption: asString(entity.imageCaption, defaultSiteData.bookings.imageCaption),
   };
 }
@@ -180,8 +184,8 @@ function fromContentFeatures(list: MaybeEntity[]): ContentFeature[] {
     headline: asString(item.headline),
     description: asString(item.description),
     detail: asString(item.detail),
-    image: asString(item.image),
-    imageAlt: asString(item.imageAlt),
+    image: getFirstMediaUrl(item.image) || "",
+    imageAlt: asString(item.image?.name || "", ""),
     tag: asString(item.tag),
     highlight: asString(item.highlight),
   }));
@@ -195,7 +199,7 @@ function fromTestimonies(list: MaybeEntity[]): Testimony[] {
     name: asString(item.name),
     role: asString(item.role),
     quote: asString(item.quote),
-    image: asString(item.image),
+    image: getFirstMediaUrl(item.image) || "",
     verse: asString(item.verse),
   }));
 }
@@ -210,8 +214,8 @@ function fromEvents(list: MaybeEntity[]): Event[] {
     time: asString(item.time),
     location: asString(item.location),
     description: asString(item.description),
-    image: asString(item.image),
-    imageAlt: asString(item.imageAlt),
+    image: getFirstMediaUrl(item.image) || "",
+    imageAlt: asString(item.image?.name || "", ""),
     badge: asString(item.badge),
     badgeColor: asString(item.badgeColor, "white") === "cyan" ? "cyan" : "white",
     spots: asString(item.spots),
@@ -290,10 +294,10 @@ async function upsertCollectionByKey(
 async function fetchNormalizedSiteData(): Promise<SiteData> {
   const [heroEntity, aboutEntity, footerEntity, bookingEntity, contentFeatureList, testimonyList, eventList] =
     await Promise.all([
-      getSingle("/api/hero"),
-      getSingle("/api/about"),
-      getSingle("/api/footer"),
-      getSingle("/api/booking"),
+      getSingle(HERO_PATH),
+      getSingle(ABOUT_PATH),
+      getSingle(FOOTER_PATH),
+      getSingle(BOOKING_PATH),
       getList(CONTENT_FEATURES_PATH),
       getList(TESTIMONIES_PATH),
       getList(EVENTS_PATH),

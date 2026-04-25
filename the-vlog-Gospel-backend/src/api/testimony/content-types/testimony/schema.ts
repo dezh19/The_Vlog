@@ -1,0 +1,43 @@
+const schema = {
+  kind: "collectionType",
+  collectionName: "testimonies",
+  info: {
+    singularName: "testimony",
+    pluralName: "testimonies",
+    displayName: "Testimony",
+    description: "Testimonies from community members",
+  },
+  options: {
+    draftAndPublish: true,
+  },
+  pluginOptions: {},
+  attributes: {
+    clientId: {
+      type: "string",
+      unique: true,
+    },
+    name: {
+      type: "string",
+      required: true,
+    },
+    role: {
+      type: "string",
+    },
+    quote: {
+      type: "text",
+      required: true,
+    },
+    image: {
+      type: "string",
+    },
+    verse: {
+      type: "string",
+    },
+    sortOrder: {
+      type: "integer",
+      default: 0,
+    },
+  },
+};
+
+export default schema;

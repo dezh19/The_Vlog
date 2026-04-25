@@ -1,0 +1,59 @@
+const schema = {
+  kind: "collectionType",
+  collectionName: "events",
+  info: {
+    singularName: "event",
+    pluralName: "events",
+    displayName: "Event",
+    description: "Upcoming events and services",
+  },
+  options: {
+    draftAndPublish: true,
+  },
+  pluginOptions: {},
+  attributes: {
+    clientId: {
+      type: "string",
+      unique: true,
+    },
+    title: {
+      type: "string",
+      required: true,
+    },
+    date: {
+      type: "string",
+    },
+    time: {
+      type: "string",
+    },
+    location: {
+      type: "string",
+    },
+    description: {
+      type: "text",
+    },
+    image: {
+      type: "string",
+    },
+    imageAlt: {
+      type: "string",
+    },
+    badge: {
+      type: "string",
+    },
+    badgeColor: {
+      type: "enumeration",
+      enum: ["cyan", "white"],
+      default: "cyan",
+    },
+    spots: {
+      type: "string",
+    },
+    sortOrder: {
+      type: "integer",
+      default: 0,
+    },
+  },
+};
+
+export default schema;
