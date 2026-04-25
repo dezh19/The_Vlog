@@ -2,7 +2,7 @@
 //  Site Data — Default content for all sections
 // ─────────────────────────────────────────────
 
-export interface HeroStat {
+export interface HeroStat extends Record<string, unknown> {
   value: string
   label: string
 }
@@ -57,19 +57,19 @@ export interface Event {
   spots: string
 }
 
-export interface BookingType {
+export interface BookingType extends Record<string, unknown> {
   id: string
   title: string
   description: string
 }
 
-export interface AboutPillar {
+export interface AboutPillar extends Record<string, unknown> {
   id: string
   title: string
   description: string
 }
 
-export interface AboutStat {
+export interface AboutStat extends Record<string, unknown> {
   value: string
   label: string
 }

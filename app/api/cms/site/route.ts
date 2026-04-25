@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { defaultSiteData, SiteData, ContentFeature, Event, Testimony } from "@/lib/data/site-data";
-import { normalizeEntity, strapiRequest, StrapiData, getMediaUrl, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
+import { normalizeEntity, strapiRequest, StrapiData, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
 
 type MaybeEntity = Record<string, unknown> & { id: number };
 
-type StrapiListResponse = StrapiData<Array<Record<string, unknown>>>;
-type StrapiSingleResponse = StrapiData<Record<string, unknown> | null>;
+type StrapiEntity = { id: number; attributes?: Record<string, unknown> } & Record<string, unknown>;
+type StrapiListResponse = StrapiData<StrapiEntity[]>;
+type StrapiSingleResponse = StrapiData<StrapiEntity | null>;
+type NamedEntity = Record<string, unknown> & { name?: string };
 
 const HERO_PATH = "/api/hero?populate=*";
 const ABOUT_PATH = "/api/about?populate=*";
@@ -76,9 +78,9 @@ function fromHeroEntity(entity: MaybeEntity | null): SiteData["hero"] {
     stats: asObjectArray<SiteData["hero"]["stats"][number]>(entity.stats),
     mainImage: {
       src: getFirstMediaUrl(entity.mainImage) || defaultSiteData.hero.mainImage.src,
-      alt: asString(entity.mainImage?.name || "", defaultSiteData.hero.mainImage.alt),
+      alt: asString((entity.mainImage as NamedEntity | null)?.name || "", defaultSiteData.hero.mainImage.alt),
     },
-    smallImages: getMediaUrls(entity.smallImages).map(src => ({ src })),
+    smallImages: getMediaUrls(entity.smallImages).map(src => ({ src, alt: "", tag: "" })),
     liveLabel: asString(entity.liveLabel, defaultSiteData.hero.liveLabel),
   };
 }
@@ -112,7 +114,7 @@ function fromAboutEntity(entity: MaybeEntity | null): SiteData["about"] {
     },
     bodyText: asString(entity.bodyText, defaultSiteData.about.bodyText),
     image: getFirstMediaUrl(entity.image) || defaultSiteData.about.image,
-    imageAlt: asString(entity.image?.name || "", defaultSiteData.about.imageAlt),
+    imageAlt: asString((entity.image as NamedEntity | null)?.name || "", defaultSiteData.about.imageAlt),
     floatStatValue: asString(entity.floatStatValue, defaultSiteData.about.floatStatValue),
     floatStatLabel: asString(entity.floatStatLabel, defaultSiteData.about.floatStatLabel),
     floatStatSub: asString(entity.floatStatSub, defaultSiteData.about.floatStatSub),
@@ -170,7 +172,7 @@ function fromBookingEntity(entity: MaybeEntity | null): SiteData["bookings"] {
       reference: asString(entity.scriptureReference, defaultSiteData.bookings.scripture.reference),
     },
     image: getFirstMediaUrl(entity.image) || defaultSiteData.bookings.image,
-    imageAlt: asString(entity.image?.name || "", defaultSiteData.bookings.imageAlt),
+    imageAlt: asString((entity.image as NamedEntity | null)?.name || "", defaultSiteData.bookings.imageAlt),
     imageCaption: asString(entity.imageCaption, defaultSiteData.bookings.imageCaption),
   };
 }
@@ -185,7 +187,7 @@ function fromContentFeatures(list: MaybeEntity[]): ContentFeature[] {
     description: asString(item.description),
     detail: asString(item.detail),
     image: getFirstMediaUrl(item.image) || "",
-    imageAlt: asString(item.image?.name || "", ""),
+    imageAlt: asString((item.image as NamedEntity | null)?.name || "", ""),
     tag: asString(item.tag),
     highlight: asString(item.highlight),
   }));
@@ -215,7 +217,7 @@ function fromEvents(list: MaybeEntity[]): Event[] {
     location: asString(item.location),
     description: asString(item.description),
     image: getFirstMediaUrl(item.image) || "",
-    imageAlt: asString(item.image?.name || "", ""),
+    imageAlt: asString((item.image as NamedEntity | null)?.name || "", ""),
     badge: asString(item.badge),
     badgeColor: asString(item.badgeColor, "white") === "cyan" ? "cyan" : "white",
     spots: asString(item.spots),
@@ -239,7 +241,7 @@ async function getSingle(path: string): Promise<MaybeEntity | null> {
 async function getList(path: string): Promise<MaybeEntity[]> {
   const response = await strapiRequest<StrapiListResponse>(path);
   const normalized = response.data
-    .map((entity) => normalizeEntity(entity as Record<string, unknown>))
+    .map((entity) => normalizeEntity(entity))
     .filter((entity): entity is MaybeEntity => entity !== null);
 
   return normalized;

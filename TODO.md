@@ -4,3 +4,8 @@
 - [x] Update header branding in `components/navbar.tsx` from `THE VLOG` to `TAG Christian Media`
 - [x] Update footer branding in `components/footer.tsx` from `THE VLOG` to `TAG Christian Media`
 - [x] Verify no remaining `THE VLOG` branding in active source files
+
+- [x] Investigate Netlify TypeScript build failure in `app/api/cms/site/route.ts`
+- [x] Update `HeroStat` type in `lib/data/site-data.ts` to satisfy `Record<string, unknown>`
+- [ ] Run `npm run build:netlify` to confirm the type error is resolved
+- [ ] Summarize fix and redeploy instruction
