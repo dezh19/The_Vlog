@@ -184,7 +184,7 @@ export default function AdminDashboard() {
           <div>
             <p className="text-sm font-semibold text-white mb-1">Changes save automatically</p>
             <p className="text-xs text-[#3F3F46] leading-relaxed">
-              All edits are saved to your browser&apos;s local storage and reflected on the live site
+              All edits are saved to Strapi CMS and reflected on the live site
               instantly. No page refresh needed.
             </p>
           </div>

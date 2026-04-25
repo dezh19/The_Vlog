@@ -1,7 +1,8 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react"
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react"
 import { defaultSiteData, SiteData, ContentFeature, Testimony, Event } from "@/lib/data/site-data"
+import { fetchSiteData, saveSiteData } from "@/lib/api/cms"
 
 // ─────────────────────────────────────────────
 //  Context Types
@@ -9,21 +10,24 @@ import { defaultSiteData, SiteData, ContentFeature, Testimony, Event } from "@/l
 
 interface SiteContextValue {
   data: SiteData
-  updateHero: (hero: SiteData["hero"]) => void
-  updateContentFeature: (id: string, feature: ContentFeature) => void
-  updateAllContentFeatures: (features: ContentFeature[]) => void
-  addTestimony: (testimony: Omit<Testimony, "id">) => void
-  updateTestimony: (id: string, testimony: Testimony) => void
-  deleteTestimony: (id: string) => void
-  reorderTestimonies: (testimonies: Testimony[]) => void
-  addEvent: (event: Omit<Event, "id">) => void
-  updateEvent: (id: string, event: Event) => void
-  deleteEvent: (id: string) => void
-  reorderEvents: (events: Event[]) => void
-  updateBookings: (bookings: SiteData["bookings"]) => void
-  updateAbout: (about: SiteData["about"]) => void
-  updateFooter: (footer: SiteData["footer"]) => void
+  isLoading: boolean
+  error: string | null
+  updateHero: (hero: SiteData["hero"]) => Promise<void>
+  updateContentFeature: (id: string, feature: ContentFeature) => Promise<void>
+  updateAllContentFeatures: (features: ContentFeature[]) => Promise<void>
+  addTestimony: (testimony: Omit<Testimony, "id">) => Promise<void>
+  updateTestimony: (id: string, testimony: Testimony) => Promise<void>
+  deleteTestimony: (id: string) => Promise<void>
+  reorderTestimonies: (testimonies: Testimony[]) => Promise<void>
+  addEvent: (event: Omit<Event, "id">) => Promise<void>
+  updateEvent: (id: string, event: Event) => Promise<void>
+  deleteEvent: (id: string) => Promise<void>
+  reorderEvents: (events: Event[]) => Promise<void>
+  updateBookings: (bookings: SiteData["bookings"]) => Promise<void>
+  updateAbout: (about: SiteData["about"]) => Promise<void>
+  updateFooter: (footer: SiteData["footer"]) => Promise<void>
   resetToDefaults: () => void
+  refetch: () => Promise<void>
   lastSaved: Date | null
 }
 
@@ -31,49 +35,74 @@ interface SiteContextValue {
 //  Context
 // ─────────────────────────────────────────────
 
-const STORAGE_KEY = "thevlog_site_data"
-
 const SiteContext = createContext<SiteContextValue | null>(null)
 
 export function SiteDataProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<SiteData>(defaultSiteData)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const dataRef = useRef(data)
 
-  // Load from localStorage on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsed = JSON.parse(stored) as SiteData
-        // Deep merge with defaults to handle new fields added later
-        setData(deepMerge(defaultSiteData, parsed))
+    dataRef.current = data
+  }, [data])
+
+  useEffect(() => {
+    const load = async () => {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const remoteData = await fetchSiteData()
+        setData(deepMerge(defaultSiteData, remoteData))
         setLastSaved(new Date())
+      } catch (e) {
+        console.warn("Failed to load site data from CMS, using defaults:", e)
+        setError("Could not load CMS data. Using defaults.")
+      } finally {
+        setIsLoading(false)
       }
-    } catch (e) {
-      console.warn("Failed to load site data from localStorage:", e)
     }
+
+    load()
   }, [])
 
-  // Persist to localStorage whenever data changes (after hydration)
-  const persist = useCallback((newData: SiteData) => {
+  const persist = useCallback(async (newData: SiteData) => {
+    setError(null)
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newData))
+      const saved = await saveSiteData(newData)
+      setData(saved)
       setLastSaved(new Date())
     } catch (e) {
-      console.warn("Failed to save site data to localStorage:", e)
+      console.warn("Failed to save site data to CMS:", e)
+      setError("Failed to save changes to CMS")
+      throw e
     }
   }, [])
 
   const updateData = useCallback(
-    (updater: (prev: SiteData) => SiteData) => {
-      setData((prev) => {
-        const next = updater(prev)
-        persist(next)
-        return next
-      })
+    async (updater: (prev: SiteData) => SiteData) => {
+      const next = updater(dataRef.current)
+      await persist(next)
     },
     [persist]
   )
+
+  const refetch = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const remoteData = await fetchSiteData()
+      setData(deepMerge(defaultSiteData, remoteData))
+      setLastSaved(new Date())
+    } catch (e) {
+      console.warn("Failed to refresh site data from CMS:", e)
+      setError("Failed to refresh CMS data")
+      throw e
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   // ── Hero ──
   const updateHero = useCallback(
@@ -186,9 +215,7 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
   // ── Reset ──
   const resetToDefaults = useCallback(() => {
     setData(defaultSiteData)
-    try {
-      localStorage.removeItem(STORAGE_KEY)
-    } catch {}
+    setError(null)
     setLastSaved(null)
   }, [])
 
@@ -196,6 +223,8 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
     <SiteContext.Provider
       value={{
         data,
+        isLoading,
+        error,
         updateHero,
         updateContentFeature,
         updateAllContentFeatures,
@@ -211,6 +240,7 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
         updateAbout,
         updateFooter,
         resetToDefaults,
+        refetch,
         lastSaved,
       }}
     >

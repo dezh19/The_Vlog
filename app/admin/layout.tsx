@@ -22,7 +22,7 @@ import {
 // ─────────────────────────────────────────────
 //  Admin password (simple client-side gate)
 // ─────────────────────────────────────────────
-const ADMIN_PASSWORD = "admin123"
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "change-me"
 const AUTH_KEY = "thevlog_admin_auth"
 
 const navItems = [

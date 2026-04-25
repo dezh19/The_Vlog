@@ -5,11 +5,12 @@ const isGitHubPages = process.env.DEPLOY_TARGET === 'github'
 const repoBasePath = '/The_Vlog'
 const basePath = isProd && isGitHubPages ? repoBasePath : ''
 const assetPrefix = basePath || undefined
+const output = isGitHubPages ? 'export' : undefined
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',
+  output,
   basePath,
   assetPrefix,
   turbopack: {
