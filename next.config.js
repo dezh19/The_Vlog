@@ -1,11 +1,13 @@
 const path = require('path')
 
 const isProd = process.env.NODE_ENV === 'production'
-const isGitHubPages = process.env.DEPLOY_TARGET === 'github'
+const isGitHubPages =
+  process.env.DEPLOY_TARGET === 'github' ||
+  process.env.GITHUB_ACTIONS === 'true'
 const repoBasePath = '/The_Vlog'
 const basePath = isProd && isGitHubPages ? repoBasePath : ''
 const assetPrefix = basePath || undefined
-const output = isGitHubPages ? 'export' : undefined
+const output = isProd && isGitHubPages ? 'export' : undefined
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
