@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+
+export const dynamic = "force-static";
 import { defaultSiteData, SiteData, ContentFeature, Event, Testimony } from "@/lib/data/site-data";
 import { normalizeEntity, strapiRequest, StrapiData, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
 
@@ -319,11 +321,19 @@ async function fetchNormalizedSiteData(): Promise<SiteData> {
 
 export async function GET() {
   try {
+    const isGitHubExportBuild =
+      process.env.NODE_ENV === "production" &&
+      (process.env.DEPLOY_TARGET === "github" || process.env.GITHUB_ACTIONS === "true");
+
+    if (isGitHubExportBuild) {
+      return NextResponse.json(defaultSiteData, { status: 200 });
+    }
+
     const data = await fetchNormalizedSiteData();
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error("Failed to fetch CMS site data:", error);
-    return NextResponse.json({ message: "Failed to fetch site data" }, { status: 500 });
+    console.error("Failed to fetch CMS site data, falling back to defaults:", error);
+    return NextResponse.json(defaultSiteData, { status: 200 });
   }
 }
 

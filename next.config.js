@@ -8,6 +8,7 @@ const repoBasePath = '/The_Vlog'
 const basePath = isProd && isGitHubPages ? repoBasePath : ''
 const assetPrefix = basePath || undefined
 const output = isProd && isGitHubPages ? 'export' : undefined
+const disableCmsApiRoutes = isProd && isGitHubPages
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,6 +18,15 @@ const nextConfig = {
   assetPrefix,
   turbopack: {
     root: path.resolve(__dirname),
+  },
+  async rewrites() {
+    if (!disableCmsApiRoutes) return []
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/404',
+      },
+    ]
   },
   images: {
     unoptimized: true,
