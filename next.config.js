@@ -8,7 +8,6 @@ const repoBasePath = '/The_Vlog'
 const basePath = isProd && isGitHubPages ? repoBasePath : ''
 const assetPrefix = basePath || undefined
 const output = isProd && isGitHubPages ? 'export' : undefined
-const disableCmsApiRoutes = isProd && isGitHubPages
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -16,17 +15,13 @@ const nextConfig = {
   output,
   basePath,
   assetPrefix,
+  env: {
+    NEXT_PUBLIC_DEPLOY_TARGET: process.env.DEPLOY_TARGET || '',
+    NEXT_PUBLIC_BASE_PATH: basePath,
+    NEXT_PUBLIC_CMS_BRIDGE_URL: process.env.NEXT_PUBLIC_CMS_BRIDGE_URL || '',
+  },
   turbopack: {
     root: path.resolve(__dirname),
-  },
-  async rewrites() {
-    if (!disableCmsApiRoutes) return []
-    return [
-      {
-        source: '/api/:path*',
-        destination: '/404',
-      },
-    ]
   },
   images: {
     unoptimized: true,
@@ -34,6 +29,10 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
       },
     ],
   },

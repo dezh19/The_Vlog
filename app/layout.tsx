@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { SiteDataProvider } from '@/lib/context/site-context'
 import './globals.css'
 
@@ -22,7 +21,6 @@ export default function RootLayout({
         <SiteDataProvider>
           {children}
         </SiteDataProvider>
-        <Analytics />
       </body>
     </html>
   )
