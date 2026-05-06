@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  repository_dispatch:
+    types:
+      - strapi-content-updated
   workflow_dispatch:
 
 permissions:
@@ -18,6 +21,13 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEPLOY_TARGET: github
+      STRAPI_URL: ${{ secrets.STRAPI_URL }}
+      NEXT_PUBLIC_STRAPI_URL: ${{ secrets.NEXT_PUBLIC_STRAPI_URL }}
+      STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+      NEXT_PUBLIC_CMS_BRIDGE_URL: ${{ secrets.NEXT_PUBLIC_CMS_BRIDGE_URL }}
+      CMS_SITE_DATA_URL: ${{ secrets.CMS_SITE_DATA_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

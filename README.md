@@ -47,6 +47,16 @@ From `frontend/` run:
 
 This creates a static export with the correct `/The_Vlog` base path.
 
+For CI deploys, set these repository secrets in `The_Vlog`:
+
+- `STRAPI_URL` = your backend base URL (example: `https://the-vlog-backend.onrender.com`)
+- `NEXT_PUBLIC_STRAPI_URL` = same backend URL
+- `STRAPI_API_TOKEN` = read-only Strapi API token
+- `NEXT_PUBLIC_CMS_BRIDGE_URL` = optional (leave empty unless using a separate bridge endpoint)
+- `CMS_SITE_DATA_URL` = `https://<your-backend-domain>/api/cms/site`
+
+The GitHub Pages workflow also listens for `repository_dispatch` type `strapi-content-updated` so backend-triggered content updates can redeploy the frontend automatically.
+
 ### Netlify
 
 From `frontend/` run:
