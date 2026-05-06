@@ -42,6 +42,13 @@
     "stats": {
       "type": "json"
     },
+    "mainVideo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
     "mainImage": {
       "type": "media",
       "multiple": false

@@ -30,9 +30,19 @@
     "detail": {
       "type": "string"
     },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
     "image": {
       "type": "media",
-      "multiple": false
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "tag": {
       "type": "string"

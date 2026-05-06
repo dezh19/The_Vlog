@@ -29,7 +29,10 @@
     },
     "image": {
       "type": "media",
-      "multiple": false
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "verse": {
       "type": "string"

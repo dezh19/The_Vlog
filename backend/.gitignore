@@ -16,6 +16,11 @@ build/
 .env.*.local
 .env*.example
 
+# Strapi runtime / uploads
+.tmp/
+public/uploads/
+.strapi/
+
 # OS
 .DS_Store
 Thumbs.db

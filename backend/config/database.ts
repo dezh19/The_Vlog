@@ -2,15 +2,18 @@ import path from "path";
 
 export default ({ env }) => {
   const client = env("DATABASE_CLIENT", "sqlite");
+  const configuredFilename = env("DATABASE_FILENAME", ".tmp/data.db");
+  const appRoot = __dirname.includes(`${path.sep}dist${path.sep}config`)
+    ? path.resolve(__dirname, "..", "..")
+    : path.resolve(__dirname, "..");
+  const sqliteFilename = path.isAbsolute(configuredFilename)
+    ? configuredFilename
+    : path.resolve(appRoot, configuredFilename);
 
   const connections = {
     sqlite: {
       connection: {
-        filename: path.join(
-          __dirname,
-          "..",
-          env("DATABASE_FILENAME", ".tmp/data.db")
-        ),
+        filename: sqliteFilename,
       },
       useNullAsDefault: true,
     },

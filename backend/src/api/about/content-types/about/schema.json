@@ -24,9 +24,8 @@
     "bodyText": {
       "type": "text"
     },
-    "image": {
-      "type": "media",
-      "multiple": false
+    "imageAlt": {
+      "type": "string"
     },
     "floatStatValue": {
       "type": "string"

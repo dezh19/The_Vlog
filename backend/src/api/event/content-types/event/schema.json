@@ -34,7 +34,10 @@
     },
     "image": {
       "type": "media",
-      "multiple": false
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "badge": {
       "type": "string"
