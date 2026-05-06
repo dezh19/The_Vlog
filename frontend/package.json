@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
-    "build:gh": "node --env-file=.env scripts/fetch-cms-data.mjs && set DEPLOY_TARGET=github&& next build",
+    "build:gh": "node scripts/fetch-cms-data.mjs && next build",
     "build:netlify": "next build",
     "start": "next start",
     "lint": "next lint"
