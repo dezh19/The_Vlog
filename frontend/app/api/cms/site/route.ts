@@ -58,10 +58,6 @@ function fromHeroEntity(entity: MaybeEntity | null): SiteData["hero"] {
       reference: asString(entity.scriptureReference, defaultSiteData.hero.scripture.reference),
     },
     stats: asObjectArray<SiteData["hero"]["stats"][number]>(entity.stats),
-    mainVideo: {
-      src: getFirstMediaUrl(entity.mainVideo) || defaultSiteData.hero.mainVideo?.src || "",
-      alt: asString((entity.mainVideo as NamedEntity | null)?.name || "", defaultSiteData.hero.mainVideo?.alt || ""),
-    },
     mainImage: {
       src: getFirstMediaUrl(entity.mainImage) || defaultSiteData.hero.mainImage.src,
       alt: asString((entity.mainImage as NamedEntity | null)?.name || "", defaultSiteData.hero.mainImage.alt),
