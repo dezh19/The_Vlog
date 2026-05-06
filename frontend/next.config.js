@@ -12,9 +12,7 @@ const output = isProd && isGitHubPages ? 'export' : undefined
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    allowedDevOrigins: ['10.0.3.27'],
-  },
+  allowedDevOrigins: ['10.0.3.27'],
   output,
   basePath,
   assetPrefix,

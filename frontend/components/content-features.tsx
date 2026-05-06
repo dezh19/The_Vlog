@@ -93,11 +93,24 @@ function FeatureCard({
     <article className="glass-card rounded-2xl overflow-hidden group cursor-pointer flex flex-col">
       {/* Image */}
       <div className={`relative overflow-hidden ${large ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
-        <img
-          src={feature.image}
-          alt={feature.imageAlt}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {feature.video ? (
+          <video
+            src={feature.video}
+            poster={feature.image || undefined}
+            aria-label={feature.imageAlt || `${feature.label} video`}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          <img
+            src={feature.image}
+            alt={feature.imageAlt}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090B] via-[#09090B]/20 to-transparent" />
 
         {/* Tag badge */}

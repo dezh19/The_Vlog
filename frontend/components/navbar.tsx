@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { PlayCircle, Menu, X, Settings } from "lucide-react"
+import { PlayCircle, Menu, X } from "lucide-react"
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -56,14 +56,6 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
-          <a
-            href="/admin"
-            className="flex items-center gap-1.5 px-3.5 py-2 text-sm text-[#52525B] hover:text-[#06B6D4] border border-white/[0.06] rounded-lg hover:border-[#06B6D4]/25 hover:bg-[#06B6D4]/[0.05] transition-all duration-200"
-            title="Admin Panel"
-          >
-            <Settings className="w-3.5 h-3.5" />
-            <span className="text-xs font-semibold">Admin</span>
-          </a>
           <button className="px-4 py-2 text-sm text-[#A1A1AA] hover:text-white border border-white/[0.08] rounded-lg hover:border-white/[0.15] hover:bg-white/[0.04] transition-all duration-200">
             Sign In
           </button>
@@ -104,14 +96,6 @@ export default function Navbar() {
             ))}
           </ul>
           <div className="flex flex-col gap-2.5 pt-3 border-t border-white/[0.06]">
-            <a
-              href="/admin"
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-[#52525B] border border-white/[0.06] rounded-lg hover:bg-[#06B6D4]/[0.05] hover:text-[#06B6D4] transition-all"
-              onClick={() => setMobileOpen(false)}
-            >
-              <Settings className="w-3.5 h-3.5" />
-              Admin Panel
-            </a>
             <button className="w-full px-4 py-2.5 text-sm text-[#A1A1AA] border border-white/[0.08] rounded-lg hover:bg-white/[0.04] transition-all">
               Sign In
             </button>

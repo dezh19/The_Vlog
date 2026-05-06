@@ -87,11 +87,23 @@ export default function Hero() {
         <div className="flex-1 w-full max-w-[520px] lg:max-w-none">
           {/* Main image */}
           <div className="relative rounded-2xl overflow-hidden border border-white/[0.07] aspect-[16/9] group mb-3">
-            <img
-              src={hero.mainImage.src}
-              alt={hero.mainImage.alt}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+            {hero.mainVideo?.src ? (
+              <video
+                src={hero.mainVideo.src}
+                aria-label={hero.mainVideo.alt || "Hero video"}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              <img
+                src={hero.mainImage.src}
+                alt={hero.mainImage.alt}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
             {/* Live indicator */}

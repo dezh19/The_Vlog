@@ -68,23 +68,3 @@ export async function fetchSiteData(): Promise<SiteData> {
     return fetchCmsJsonFile();
   }
 }
-
-export async function saveSiteData(data: SiteData): Promise<SiteData> {
-  if (deployTarget === "github") {
-    if (!cmsBridgeBaseUrl) {
-      throw new Error(
-        "CMS editing on GitHub Pages requires NEXT_PUBLIC_CMS_BRIDGE_URL to point to your live CMS API bridge."
-      );
-    }
-  }
-
-  const response = await fetch(getCmsSiteEndpoint(), {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  return parseJsonResponse<SiteData>(response);
-}

@@ -17,6 +17,7 @@ export interface HeroData {
   ctaSecondary: string
   scripture: { text: string; reference: string }
   stats: HeroStat[]
+  mainVideo?: { src: string; alt: string }
   mainImage: { src: string; alt: string }
   smallImages: { src: string; alt: string; tag: string }[]
   liveLabel: string
@@ -28,6 +29,7 @@ export interface ContentFeature {
   headline: string
   description: string
   detail: string
+  video?: string
   image: string
   imageAlt: string
   tag: string
@@ -132,6 +134,10 @@ export const defaultSiteData: SiteData = {
       { value: "50K+", label: "Community" },
       { value: "Weekly", label: "New Content" },
     ],
+    mainVideo: {
+      src: "",
+      alt: "",
+    },
     mainImage: {
       src: "https://images.unsplash.com/photo-1609101401874-72a3a7a1c08a?w=900&q=85&auto=format&fit=crop",
       alt: "Worship service congregation raising hands in praise during a church gathering",
@@ -159,6 +165,7 @@ export const defaultSiteData: SiteData = {
       description:
         "Sermons, devotionals, and Christian discussions crafted to deepen your faith and inspire your walk with God. New episodes every Sunday.",
       detail: "50+ series available",
+      video: "",
       image:
         "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=700&q=85&auto=format&fit=crop",
       imageAlt:
@@ -173,6 +180,7 @@ export const defaultSiteData: SiteData = {
       description:
         "Deep-dive articles, Bible breakdowns, and personal testimonies written to challenge, encourage, and equip believers in everyday life.",
       detail: "120+ articles published",
+      video: "",
       image:
         "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=700&q=85&auto=format&fit=crop",
       imageAlt:
@@ -187,6 +195,7 @@ export const defaultSiteData: SiteData = {
       description:
         "Verse breakdowns, encouragement messages, and contextual scripture study to keep you grounded in the Word every single day.",
       detail: "365 daily devotionals",
+      video: "",
       image:
         "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=700&q=85&auto=format&fit=crop",
       imageAlt:
@@ -201,6 +210,7 @@ export const defaultSiteData: SiteData = {
       description:
         "Long-form conversations with pastors, Christian leaders, and everyday believers sharing their journeys, testimonies, and biblical insights.",
       detail: "80+ episodes recorded",
+      video: "",
       image:
         "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=700&q=85&auto=format&fit=crop",
       imageAlt:
@@ -215,6 +225,7 @@ export const defaultSiteData: SiteData = {
       description:
         "Faith-based global news, church events, and stories of impact from the Christian community — curated to keep you informed and inspired.",
       detail: "Updated every week",
+      video: "",
       image:
         "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=700&q=85&auto=format&fit=crop",
       imageAlt:

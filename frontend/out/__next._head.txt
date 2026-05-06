@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[97367,["/The_Vlog/_next/static/chunks/2f236954d6a65e12.js"],"ViewportBoundary"]
+3:I[97367,["/The_Vlog/_next/static/chunks/2f236954d6a65e12.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"-I0zel2T-j1Q61nC5PM4K","rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"TAG Christian Media — Christian Media Platform"}],["$","meta","1",{"name":"description","content":"A platform for Christian content including videos, blogs, scriptures, podcasts, and faith-based news — updated weekly."}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"loading":null,"isPartial":false}
