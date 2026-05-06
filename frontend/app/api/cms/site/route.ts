@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 import { defaultSiteData, SiteData, ContentFeature, Event, Testimony } from "@/lib/data/site-data";
 import { normalizeEntity, strapiRequest, StrapiData, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
 
@@ -43,25 +42,6 @@ function slugifyLabel(value: string, fallback: string): string {
   return slug || fallback;
 }
 
-function toHeroPayload(hero: SiteData["hero"]) {
-  return {
-    badge: hero.badge,
-    headline1: hero.headline1,
-    headlineAccent: hero.headlineAccent,
-    headline2: hero.headline2,
-    subheadline: hero.subheadline,
-    ctaPrimary: hero.ctaPrimary,
-    ctaSecondary: hero.ctaSecondary,
-    scriptureText: hero.scripture.text,
-    scriptureReference: hero.scripture.reference,
-    stats: hero.stats,
-    mainImageSrc: hero.mainImage.src,
-    mainImageAlt: hero.mainImage.alt,
-    smallImages: hero.smallImages,
-    liveLabel: hero.liveLabel,
-  };
-}
-
 function fromHeroEntity(entity: MaybeEntity | null): SiteData["hero"] {
   if (!entity) return defaultSiteData.hero;
 
@@ -78,30 +58,16 @@ function fromHeroEntity(entity: MaybeEntity | null): SiteData["hero"] {
       reference: asString(entity.scriptureReference, defaultSiteData.hero.scripture.reference),
     },
     stats: asObjectArray<SiteData["hero"]["stats"][number]>(entity.stats),
+    mainVideo: {
+      src: getFirstMediaUrl(entity.mainVideo) || defaultSiteData.hero.mainVideo?.src || "",
+      alt: asString((entity.mainVideo as NamedEntity | null)?.name || "", defaultSiteData.hero.mainVideo?.alt || ""),
+    },
     mainImage: {
       src: getFirstMediaUrl(entity.mainImage) || defaultSiteData.hero.mainImage.src,
       alt: asString((entity.mainImage as NamedEntity | null)?.name || "", defaultSiteData.hero.mainImage.alt),
     },
     smallImages: getMediaUrls(entity.smallImages).map(src => ({ src, alt: "", tag: "" })),
     liveLabel: asString(entity.liveLabel, defaultSiteData.hero.liveLabel),
-  };
-}
-
-function toAboutPayload(about: SiteData["about"]) {
-  return {
-    missionText: about.missionText,
-    missionScriptureText: about.missionScripture.text,
-    missionScriptureReference: about.missionScripture.reference,
-    bodyText: about.bodyText,
-    image: about.image,
-    imageAlt: about.imageAlt,
-    floatStatValue: about.floatStatValue,
-    floatStatLabel: about.floatStatLabel,
-    floatStatSub: about.floatStatSub,
-    floatSmallValue: about.floatSmallValue,
-    floatSmallLabel: about.floatSmallLabel,
-    pillars: about.pillars,
-    stats: about.stats,
   };
 }
 
@@ -127,16 +93,6 @@ function fromAboutEntity(entity: MaybeEntity | null): SiteData["about"] {
   };
 }
 
-function toFooterPayload(footer: SiteData["footer"]) {
-  return {
-    scriptureOfWeekText: footer.scriptureOfWeek.text,
-    scriptureOfWeekReference: footer.scriptureOfWeek.reference,
-    tagline: footer.tagline,
-    taglineVerse: footer.taglineVerse,
-    description: footer.description,
-  };
-}
-
 function fromFooterEntity(entity: MaybeEntity | null): SiteData["footer"] {
   if (!entity) return defaultSiteData.footer;
 
@@ -148,18 +104,6 @@ function fromFooterEntity(entity: MaybeEntity | null): SiteData["footer"] {
     tagline: asString(entity.tagline, defaultSiteData.footer.tagline),
     taglineVerse: asString(entity.taglineVerse, defaultSiteData.footer.taglineVerse),
     description: asString(entity.description, defaultSiteData.footer.description),
-  };
-}
-
-function toBookingPayload(bookings: SiteData["bookings"]) {
-  return {
-    types: bookings.types,
-    highlights: bookings.highlights,
-    scriptureText: bookings.scripture.text,
-    scriptureReference: bookings.scripture.reference,
-    image: bookings.image,
-    imageAlt: bookings.imageAlt,
-    imageCaption: bookings.imageCaption,
   };
 }
 
@@ -188,6 +132,7 @@ function fromContentFeatures(list: MaybeEntity[]): ContentFeature[] {
     headline: asString(item.headline),
     description: asString(item.description),
     detail: asString(item.detail),
+    video: getFirstMediaUrl(item.video) || "",
     image: getFirstMediaUrl(item.image) || "",
     imageAlt: asString((item.image as NamedEntity | null)?.name || "", ""),
     tag: asString(item.tag),
@@ -249,52 +194,6 @@ async function getList(path: string): Promise<MaybeEntity[]> {
   return normalized;
 }
 
-async function saveSingle(path: string, payload: Record<string, unknown>) {
-  await strapiRequest(path, {
-    method: "PUT",
-    body: JSON.stringify({ data: payload }),
-  });
-}
-
-async function upsertCollectionByKey(
-  collectionPath: string,
-  incoming: Array<Record<string, unknown>>,
-  getStableKey: (entry: Record<string, unknown>) => string
-) {
-  const existing = await getList(`${collectionPath}?pagination[pageSize]=100`);
-  const existingByKey = new Map(existing.map((entry) => [getStableKey(entry), entry]));
-  const incomingKeys = new Set<string>();
-
-  for (let index = 0; index < incoming.length; index += 1) {
-    const entry = incoming[index];
-    const key = getStableKey(entry);
-    incomingKeys.add(key);
-
-    const current = existingByKey.get(key);
-
-    if (current) {
-      await strapiRequest(`${collectionPath}/${current.id}`, {
-        method: "PUT",
-        body: JSON.stringify({ data: entry }),
-      });
-    } else {
-      await strapiRequest(collectionPath, {
-        method: "POST",
-        body: JSON.stringify({ data: entry }),
-      });
-    }
-  }
-
-  for (const oldEntry of existing) {
-    const key = getStableKey(oldEntry);
-    if (!incomingKeys.has(key)) {
-      await strapiRequest(`${collectionPath}/${oldEntry.id}`, {
-        method: "DELETE",
-      });
-    }
-  }
-}
-
 async function fetchNormalizedSiteData(): Promise<SiteData> {
   const [heroEntity, aboutEntity, footerEntity, bookingEntity, contentFeatureList, testimonyList, eventList] =
     await Promise.all([
@@ -334,72 +233,5 @@ export async function GET() {
   } catch (error) {
     console.error("Failed to fetch CMS site data, falling back to defaults:", error);
     return NextResponse.json(defaultSiteData, { status: 200 });
-  }
-}
-
-export async function PUT(request: Request) {
-  try {
-    const payload = (await request.json()) as SiteData;
-
-    await saveSingle("/api/hero", toHeroPayload(payload.hero));
-    await saveSingle("/api/about", toAboutPayload(payload.about));
-    await saveSingle("/api/footer", toFooterPayload(payload.footer));
-    await saveSingle("/api/booking", toBookingPayload(payload.bookings));
-
-    await upsertCollectionByKey(
-      "/api/content-features",
-      payload.contentFeatures.map((item, index) => ({
-        featureId: item.id,
-        label: item.label,
-        headline: item.headline,
-        description: item.description,
-        detail: item.detail,
-        image: item.image,
-        imageAlt: item.imageAlt,
-        tag: item.tag,
-        highlight: item.highlight,
-        sortOrder: index,
-      })),
-      (entry) => asString(entry.featureId)
-    );
-
-    await upsertCollectionByKey(
-      "/api/testimonies",
-      payload.testimonies.map((item, index) => ({
-        clientId: item.id,
-        name: item.name,
-        role: item.role,
-        quote: item.quote,
-        image: item.image,
-        verse: item.verse,
-        sortOrder: index,
-      })),
-      (entry) => asString(entry.clientId)
-    );
-
-    await upsertCollectionByKey(
-      "/api/events",
-      payload.events.map((item, index) => ({
-        clientId: item.id,
-        title: item.title,
-        date: item.date,
-        time: item.time,
-        location: item.location,
-        description: item.description,
-        image: item.image,
-        imageAlt: item.imageAlt,
-        badge: item.badge,
-        badgeColor: item.badgeColor,
-        spots: item.spots,
-        sortOrder: index,
-      })),
-      (entry) => asString(entry.clientId)
-    );
-
-    const nextData = await fetchNormalizedSiteData();
-    return NextResponse.json(nextData, { status: 200 });
-  } catch (error) {
-    console.error("Failed to update CMS site data:", error);
-    return NextResponse.json({ message: "Failed to update site data" }, { status: 500 });
   }
 }
