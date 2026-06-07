@@ -27,18 +27,26 @@ function buildHeaders(extra?: HeadersInit): Headers {
 }
 
 export async function strapiRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${STRAPI_BASE_URL}${path}`, {
-    ...init,
-    headers: buildHeaders(init?.headers),
-    cache: "no-store",
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8_000);
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Strapi request failed (${response.status}) ${path}: ${errorText || response.statusText}`);
+  try {
+    const response = await fetch(`${STRAPI_BASE_URL}${path}`, {
+      ...init,
+      headers: buildHeaders(init?.headers),
+      cache: "no-store",
+      signal: controller.signal,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Strapi request failed (${response.status}) ${path}: ${errorText || response.statusText}`);
+    }
+
+    return (await response.json()) as T;
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  return (await response.json()) as T;
 }
 
 export function normalizeEntity<T extends Record<string, unknown>>(entity: StrapiListEntity | null | undefined): (T & { id: number }) | null {

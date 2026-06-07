@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-export const dynamic = "force-static";
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 import { defaultSiteData, SiteData, ContentFeature, Event, Testimony } from "@/lib/data/site-data";
 import { normalizeEntity, strapiRequest, StrapiData, getMediaUrls, getFirstMediaUrl } from "@/lib/server/strapi";
 
