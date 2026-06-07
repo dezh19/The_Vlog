@@ -44,6 +44,32 @@ export function SiteDataProvider({ children }: { children: React.ReactNode }) {
     load()
   }, [])
 
+  // Re-fetch silently whenever the tab becomes visible again or every 60 s.
+  // This means content published in Strapi appears automatically without
+  // the user having to manually refresh the page.
+  useEffect(() => {
+    const silentRefresh = async () => {
+      try {
+        const remoteData = await fetchSiteData()
+        setData(deepMerge(defaultSiteData, remoteData))
+      } catch {
+        // keep existing data on network error
+      }
+    }
+
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") silentRefresh()
+    }
+
+    document.addEventListener("visibilitychange", handleVisibility)
+    const interval = setInterval(silentRefresh, 60_000)
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibility)
+      clearInterval(interval)
+    }
+  }, [])
+
   const refetch = useCallback(async () => {
     setIsLoading(true)
     setError(null)
