@@ -36,6 +36,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# OneDrive sync conflict copies of next-env.d.ts
+frontend/next-env.d-*.ts
 
 # split repos
 /backend/
+
+# Local Netlify folder
+.netlify

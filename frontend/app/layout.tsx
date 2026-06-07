@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SiteDataProvider } from '@/lib/context/site-context'
+import { ErrorBoundary } from '@/components/error-boundary'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased bg-[#09090B] text-white">
-        <SiteDataProvider>
-          {children}
-        </SiteDataProvider>
+        <ErrorBoundary>
+          <SiteDataProvider>
+            {children}
+          </SiteDataProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

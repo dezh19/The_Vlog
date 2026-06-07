@@ -1,14 +1,6 @@
 [build]
   base = "frontend"
   command = "npm run build:netlify"
-  publish = "out"
 
   [build.environment]
-    NETLIFY_NEXT_PLUGIN_SKIP = "true"
-
-# For static-exported Next.js sites, direct visits to nested routes
-# can 404 unless rewritten to index.html.
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+    DEPLOY_TARGET = "netlify"

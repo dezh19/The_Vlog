@@ -4,15 +4,23 @@ const isProd = process.env.NODE_ENV === 'production'
 const isGitHubPages =
   process.env.DEPLOY_TARGET === 'github' ||
   process.env.GITHUB_ACTIONS === 'true'
-const repoBasePath = '/The_Vlog'
+const repoBasePath = process.env.NEXT_PUBLIC_REPO_BASE_PATH || '/The_Vlog'
 const basePath = isProd && isGitHubPages ? repoBasePath : ''
 const assetPrefix = basePath || undefined
 const output = isProd && isGitHubPages ? 'export' : undefined
 
+const allowedDevOrigins = process.env.NEXT_PUBLIC_ALLOWED_DEV_ORIGINS
+  ? process.env.NEXT_PUBLIC_ALLOWED_DEV_ORIGINS.split(',').map(s => s.trim()).filter(Boolean)
+  : []
+
+const strapiRemotePattern = process.env.NEXT_PUBLIC_STRAPI_HOSTNAME
+  ? [{ protocol: 'https', hostname: process.env.NEXT_PUBLIC_STRAPI_HOSTNAME }]
+  : []
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  allowedDevOrigins: ['10.0.3.27'],
+  allowedDevOrigins,
   output,
   basePath,
   assetPrefix,
@@ -35,6 +43,7 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
       },
+      ...strapiRemotePattern,
     ],
   },
 }
